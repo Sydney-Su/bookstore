@@ -18,4 +18,17 @@ def get_all_books():
     books = cursor.fetchall()
     cursor.close()
     connection.close()
+    
     return books
+
+# Add a book to the PostgreSQL database
+def add_book(title, author, price, published_date):
+    connection = connect_to_db()
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO books (title, author, price, published_date) VALUES (%s, %s, %s, %s)",
+            (title, author, price, published_date),
+    )
+    connection.commit()
+    cursor.close()
+    connection.close()
