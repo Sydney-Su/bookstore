@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect, render_template
 from flask_cors import CORS
 #import sys      # importing database.py
 
@@ -40,6 +40,22 @@ def create_book():
         return jsonify({"message": "Book added successfully!"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        # Get form data
+        book_title = request.form['bookTitle']
+        author = request.form['author']
+        
+        # Process form data (e.g., store it in the database)
+        # For now, we'll just print it to the console
+        print(f"Book Title: {book_title}, Author: {author}")
+        
+        # Redirect to a different page after submission (optional)
+        return redirect('/book_list')  # Redirect to the book list page (adjust as needed)
+    
+    return render_template('add_book.html')  # Render the form page when the user accesses this route
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
